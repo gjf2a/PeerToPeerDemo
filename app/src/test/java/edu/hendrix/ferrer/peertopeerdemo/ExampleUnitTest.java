@@ -30,8 +30,8 @@ public class ExampleUnitTest {
         }).start();
 
         Socket test = new Socket("localhost", Server.APP_PORT);
-        MainActivity.sendOver(test, testMsg);
-        String result = MainActivity.receive(test);
-        assertEquals(SocketEchoThread.REPLY_HEADER + testMsg + "\n", result);
+        Communication.sendOver(test, testMsg);
+        String result = Communication.receive(test);
+        assertEquals(SocketEchoThread.REPLY_HEADER + testMsg, result);
     }
 }

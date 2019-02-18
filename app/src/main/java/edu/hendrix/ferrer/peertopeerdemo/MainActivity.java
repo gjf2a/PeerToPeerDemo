@@ -8,10 +8,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.SocketException;
 
@@ -80,8 +77,8 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 try {
                     Socket target = new Socket(host, port);
-                    sendOver(target, message);
-                    showIncoming(receive(target));
+                    Communication.sendOver(target, message);
+                    showIncoming(Communication.receive(target));
                     target.close();
                 } catch (final Exception e) {
                     MainActivity.this.runOnUiThread(new Runnable() {
@@ -96,20 +93,4 @@ public class MainActivity extends AppCompatActivity {
         }.start();
     }
 
-    public static void sendOver(Socket target, String message) throws IOException {
-        PrintWriter sockout = new PrintWriter(target.getOutputStream());
-        sockout.println(message);
-        sockout.flush();
-    }
-
-    public static String receive(Socket target) throws IOException {
-        BufferedReader sockin = new BufferedReader(new InputStreamReader(target.getInputStream()));
-        while (!sockin.ready()) {}
-        StringBuilder input = new StringBuilder();
-        while (sockin.ready()) {
-            input.append(sockin.readLine());
-            input.append("\n");
-        }
-        return input.toString();
-    }
 }
