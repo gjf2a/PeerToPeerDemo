@@ -1,7 +1,5 @@
 package edu.hendrix.ferrer.peertopeerdemo;
 
-import android.util.Log;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -26,36 +24,15 @@ public class SocketEchoThread extends Thread {
 
     public void run() {
         try {
-            PrintWriter writer = new PrintWriter(socket.getOutputStream());
-            sendGreeting(writer);
-            String msg = getMessage();
-            echoAndClose(writer, msg);
+            PrintWriter pw = new PrintWriter(socket.getOutputStream());
+            String msg = Communication.receive(socket);
+            Communication.sendOver(socket, msg);
+            socket.close();
             for (ServerListener listener: listeners) {
                 listener.notifyMessage(msg);
             }
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }
-    }
-
-    private void sendGreeting(PrintWriter writer) {
-        writer.print(REPLY_HEADER);
-    }
-
-    private void echoAndClose(PrintWriter writer, String msg) throws IOException {
-        writer.print(msg);
-        writer.flush();
-        socket.close();
-    }
-
-    private String getMessage() throws IOException {
-        BufferedReader responses =
-                new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        StringBuilder sb = new StringBuilder();
-        while (!responses.ready()){}
-        while (responses.ready()) {
-            sb.append(responses.readLine() + '\n');
-        }
-        return sb.toString();
     }
 }

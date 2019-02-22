@@ -32,6 +32,6 @@ public class ExampleUnitTest {
         Socket test = new Socket("localhost", Server.APP_PORT);
         Communication.sendOver(test, testMsg);
         String result = Communication.receive(test);
-        assertEquals(SocketEchoThread.REPLY_HEADER + testMsg, result);
+        assertEquals(testMsg, result);
     }
 }

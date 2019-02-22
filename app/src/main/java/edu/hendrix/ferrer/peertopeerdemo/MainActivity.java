@@ -22,6 +22,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        setupComponents();
+        setupClient();
+        setupServer();
+    }
+
+    private void setupComponents() {
         myIpView = findViewById(R.id.myIpView);
         outgoing = findViewById(R.id.outgoing);
         incoming = findViewById(R.id.incoming);
@@ -32,15 +38,19 @@ public class MainActivity extends AppCompatActivity {
         } catch (SocketException e) {
             Log.e("MainActivity", "Threw exception when finding ip address");
         }
+    }
 
-        final Button send = findViewById(R.id.send);
+    private void setupClient() {
+        Button send = findViewById(R.id.send);
         send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 send(outgoing.getText().toString(), host.getText().toString(), Server.APP_PORT);
             }
         });
+    }
 
+    private void setupServer() {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -58,12 +68,10 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }).start();
-
-
     }
 
     private void showIncoming(final String msg) {
-        MainActivity.this.runOnUiThread(new Runnable() {
+        runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 incoming.setText(msg);
