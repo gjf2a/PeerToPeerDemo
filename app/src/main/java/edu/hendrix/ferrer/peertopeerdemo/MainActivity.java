@@ -55,14 +55,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 try {
-                    Server s = new Server();
-                    s.addListener(new ServerListener() {
+                    Server.get().addListener(new ServerListener() {
                         @Override
                         public void notifyMessage(String msg) {
                             showIncoming(msg);
                         }
                     });
-                    s.listen();
+                    Server.get().listen();
                 } catch (IOException e) {
                     Log.e(MainActivity.class.getName(), "Could not start server");
                 }

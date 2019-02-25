@@ -3,12 +3,7 @@ package edu.hendrix.ferrer.peertopeerdemo;
 /**
  * Created by gabriel on 2/15/19.
  */
-import android.util.Log;
-
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -17,10 +12,19 @@ public class Server {
 
     public static final int APP_PORT = 8888;
 
+    private static Server instance;
+
+    public static Server get() throws IOException {
+        if (instance == null) {
+            instance = new Server();
+        }
+        return instance;
+    }
+
     private ServerSocket accepter;
     private ArrayList<ServerListener> listeners = new ArrayList<>();
 
-    public Server() throws IOException {
+    private Server() throws IOException {
         accepter = new ServerSocket(APP_PORT);
     }
 

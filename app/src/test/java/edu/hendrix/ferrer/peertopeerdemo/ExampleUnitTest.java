@@ -21,8 +21,7 @@ public class ExampleUnitTest {
             @Override
             public void run() {
                 try {
-                    Server s = new Server();
-                    s.listenOnce().start();
+                    Server.get().listenOnce().start();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
